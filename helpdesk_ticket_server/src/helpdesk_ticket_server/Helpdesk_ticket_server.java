@@ -4,9 +4,7 @@
  */
 package helpdesk_ticket_server;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -28,29 +26,20 @@ public class Helpdesk_ticket_server {
             System.out.println("Listening on port: " + port);
             
             // Blocks excecution until client connects
-            // Set up ability to read what client enters
-            // Set up ability to write to the client
-            try(Socket socket = serverSocket.accept();
-                    BufferedReader in = new BufferedReader( new InputStreamReader(socket.getInputStream()));
-                    PrintWriter out = new PrintWriter(socket.getOutputStream(),true)) {
-                
-                String clientMessage;
-                
-                // Check if clientMessage is null where the client has disconnected
-                while((clientMessage = in.readLine()) != null) {
-                    // Trim clientMessage to prevent issues with commands being misinterpreted 
-                    clientMessage = clientMessage.trim();
-                    
-                    // Client sends stop command or client disconnects
-                    if(clientMessage.equals("STOP")) {
-                        out.println("Terminated");
-                        System.out.println("Terminated");
-                        break;
-                    }
-                    
+            while(true){
+                try{
+                    Socket link = serverSocket.accept();
+                    // Start a new Runnable class
+                    ClientConnectionRun clientConnectionRun = new ClientConnectionRun(link);
+                    // Puts class into its own thread
+                    Thread thread = new Thread(clientConnectionRun);
+                    // Starts class excecution on thread
+                    thread.start();
                 }
-            }
-            
+                catch(IOException e) {
+                    System.out.println("Error:" + e);
+                }
+            }            
         }
         catch(Exception e) {
             System.out.println("Error: " + e);
