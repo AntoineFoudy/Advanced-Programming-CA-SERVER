@@ -18,6 +18,8 @@ public class Helpdesk_ticket_server {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        // Create new Instance of TicketManagement to be shared and used by each ClientConnectionRun Instance
+        TicketManagement ticketManagement = new TicketManagement();
         // Server's port number
         int port = 1818;
         // Instantiate new ServerSocket in try with resources (implements java.io.Closeable)
@@ -30,7 +32,7 @@ public class Helpdesk_ticket_server {
                 try{
                     Socket link = serverSocket.accept();
                     // Start a new Runnable class
-                    ClientConnectionRun clientConnectionRun = new ClientConnectionRun(link);
+                    ClientConnectionRun clientConnectionRun = new ClientConnectionRun(link, ticketManagement);
                     // Puts class into its own thread
                     Thread thread = new Thread(clientConnectionRun);
                     // Starts class excecution on thread
