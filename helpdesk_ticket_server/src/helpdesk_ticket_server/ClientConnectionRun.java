@@ -52,27 +52,24 @@ public class ClientConnectionRun implements Runnable {
                 
                 
                 
-                // Parse clientMessage into a format that allows the system to handle the request
-                String[] clientCommands = clientMessage.split(";");
-                for(int i = 0; i < clientCommands.length; i++) {
-                    clientCommands[i] = clientCommands[i].trim();
-                }
                 
-                // Note to self each command requires 5 fields, if only 2 fields are provided the rest of the fields must be "-;"
-                // Add is a check to see if the 5 fields are provided
-                // Note to anybody else brief has examples of each command, demonstrating this
+                
+                
                 try {
-                    if(!(clientCommands.length == 5)) {
+                    // Parse clientMessage into a format that allows the system to handle the request
+                    String[] clientCommands = clientMessage.split(";");
+                    for(int i = 0; i < clientCommands.length; i++) {
+                        clientCommands[i] = clientCommands[i].trim();
+                    }
+                
+                    // Eeach command requires 5 fields, if only 2 fields are provided the rest of the fields must be "-;"
+                     if(!(clientCommands.length == 5)) {
                         throw new InvalidCommandException("There must be 5 fields in the command");
                     }
-                } catch (InvalidCommandException e) {
-                    out.println("InvalidCommandException: " + e.getMessage());
-                }
-                
-                // Action is case-insensitive
-                clientCommands[0] = clientCommands[0].toLowerCase();
-                
-                try{
+                     
+                    // Action is case-insensitive
+                    clientCommands[0] = clientCommands[0].toLowerCase();
+                    
                     // Check which command is being called and throw InvalidCommandException if command is not valid
                     if(clientCommands[0].equals(acceptedCommands.get(0))) {
                         // open command
@@ -88,11 +85,10 @@ public class ClientConnectionRun implements Runnable {
                     }
                     else {
                         throw new InvalidCommandException("Command must be: " + acceptedCommands.toString());
-                    }
+                    }                     
                 } catch (InvalidCommandException e) {
                     out.println("InvalidCommandException: " + e.getMessage());
                 }
-
             }
         } catch (IOException e) {
             System.out.println("Error: " + e);
