@@ -48,7 +48,7 @@ public class ClientConnectionRun implements Runnable {
                 }
                 
                 // Test if clients mssage is being recived and if each link is ran on its own thread
-                out.println(clientMessage);
+                // out.println(clientMessage);
                 
                 
                 
@@ -57,9 +57,17 @@ public class ClientConnectionRun implements Runnable {
                 for(int i = 0; i < clientCommands.length; i++) {
                     clientCommands[i] = clientCommands[i].trim();
                 }
+                
                 // Note to self each command requires 5 fields, if only 2 fields are provided the rest of the fields must be "-;"
                 // Add is a check to see if the 5 fields are provided
                 // Note to anybody else brief has examples of each command, demonstrating this
+                try {
+                    if(!(clientCommands.length == 5)) {
+                        throw new InvalidCommandException("There must be 5 fields in the command");
+                    }
+                } catch (InvalidCommandException e) {
+                    out.println("InvalidCommandException: " + e.getMessage());
+                }
                 
                 try{
                     // Check which command is being called and throw InvalidCommandException if command is not valid
