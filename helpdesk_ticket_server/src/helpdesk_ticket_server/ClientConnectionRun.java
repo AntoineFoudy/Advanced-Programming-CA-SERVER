@@ -69,16 +69,22 @@ public class ClientConnectionRun implements Runnable {
                     out.println("InvalidCommandException: " + e.getMessage());
                 }
                 
+                // Action is case-insensitive
+                clientCommands[0] = clientCommands[0].toLowerCase();
+                
                 try{
                     // Check which command is being called and throw InvalidCommandException if command is not valid
                     if(clientCommands[0].equals(acceptedCommands.get(0))) {
                         // open command
+                        out.println(ticketManagement.open(clientCommands[1], clientCommands[2], clientCommands[3], clientCommands[4]));
                     } 
                     else if(clientCommands[0].equals(acceptedCommands.get(1))) {
                         // close command
+                        out.println(ticketManagement.close(clientCommands[1]));
                     }
                     else if(clientCommands[0].equals(acceptedCommands.get(2))) {
                         // list command
+                        out.println(ticketManagement.list(clientCommands[2]));
                     }
                     else {
                         throw new InvalidCommandException("Command must be: " + acceptedCommands.toString());
