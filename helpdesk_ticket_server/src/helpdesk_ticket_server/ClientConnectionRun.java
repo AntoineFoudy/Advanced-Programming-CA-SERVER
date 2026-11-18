@@ -49,22 +49,24 @@ public class ClientConnectionRun implements Runnable {
                 
                 // Test if clients mssage is being recived and if each link is ran on its own thread
                 // out.println(clientMessage);
-                
-                
-                
-                
-                
+
                 
                 try {
                     // Parse clientMessage into a format that allows the system to handle the request
-                    String[] clientCommands = clientMessage.split(";");
-                    for(int i = 0; i < clientCommands.length; i++) {
-                        clientCommands[i] = clientCommands[i].trim();
-                    }
-                
+                    String[] clientCommands = clientMessage.split(";", -1);
+                    
                     // Eeach command requires 5 fields, if only 2 fields are provided the rest of the fields must be "-;"
                      if(!(clientCommands.length == 5)) {
                         throw new InvalidCommandException("There must be 5 fields in the command");
+                    }
+                     
+                    for(int i = 0; i < clientCommands.length; i++) {
+                        clientCommands[i] = clientCommands[i].trim();
+                        
+                        // Make sure there are no empty fields
+                        if(clientCommands[i].isEmpty()) {
+                            throw new InvalidCommandException("All 5 fields must not be left blank");
+                        }
                     }
                      
                     // Action is case-insensitive
@@ -88,6 +90,8 @@ public class ClientConnectionRun implements Runnable {
                     }                     
                 } catch (InvalidCommandException e) {
                     out.println("InvalidCommandException: " + e.getMessage());
+                } catch (Exception e) {
+                    out.println("Something unexpected occured: " + e.getMessage());
                 }
             }
         } catch (IOException e) {
