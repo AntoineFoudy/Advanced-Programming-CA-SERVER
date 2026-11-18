@@ -42,8 +42,7 @@ public class ClientConnectionRun implements Runnable {
 
                 // Client sends stop command or client disconnects
                 if (clientMessage.equals("STOP")) {
-                    out.println("Terminated");
-                    System.out.println("Terminated");
+                    out.println("TERMINATE");
                     break;
                 }
                 

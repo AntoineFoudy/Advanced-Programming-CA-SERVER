@@ -83,14 +83,14 @@ public class TicketManagement {
             return student + " has no open tickets";
         }
         
-        // Add Student name + formatted message (has x open ticket(s)
+        // Add Student name + formatted message (has x open ticket(s):)
         String response = student + " has " + ticketAmount + " open ticket";
         if(ticketAmount > 1) {
             response += "s";
         }
         response += ": ";
         
-
+        // Add each ticket to the string with a delimiter of "; " to indicate where ticket ends and where new ticket starts
         response += String.join("; ", activeTickets);
         
         return response;
