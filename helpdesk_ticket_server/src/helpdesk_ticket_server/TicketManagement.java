@@ -4,6 +4,7 @@
  */
 package helpdesk_ticket_server;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -63,8 +64,8 @@ public class TicketManagement {
     
     // Method to create the formatted response for at the end of every command
     private String serverResponse(String student) {
-        // String Builder to create response message
-        StringBuilder response = new StringBuilder();
+        // Create a collection of active tickets for spesified student
+        ArrayList<String> activeTickets = new ArrayList<>();
         
         // Ticket count
         int ticketAmount = 0;
@@ -73,7 +74,7 @@ public class TicketManagement {
         for(Ticket t : tickets.values()) {
             if(t.getStudentName().equalsIgnoreCase(student)) {
                 ticketAmount += 1;
-                response.append(t.toString()).append("; ");
+                activeTickets.add(t.toString());
             } 
         }
         
@@ -83,15 +84,16 @@ public class TicketManagement {
         }
         
         // Add Student name + formatted message (has x open ticket(s)
+        String response = student + " has " + ticketAmount + " open ticket";
         if(ticketAmount > 1) {
-            response.insert(0, " has " + ticketAmount + " open tickets: ");
+            response += "s";
         }
-        else {
-            response.insert(0, " has " + ticketAmount + " open ticket: ");
-        }
-        response.insert(0, student);
+        response += ": ";
         
-        return response.toString();
+
+        response += String.join("; ", activeTickets);
+        
+        return response;
     }
     
 }

@@ -39,6 +39,6 @@ public class Ticket {
     
     @Override
     public String toString(){
-        return ticketId + "-" + category + "-" + description;
+        return ticketId + " - " + category + " - " + description;
     }
 }
