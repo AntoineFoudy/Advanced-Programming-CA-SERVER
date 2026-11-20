@@ -109,13 +109,15 @@ public class ClientConnectionRun implements Runnable {
                         out.println(ticketManagement.list(clientCommands[2]));
                     }                     
                 } catch (InvalidCommandException e) {
-                    out.println("InvalidCommandException: " + e.getMessage());
+                    out.println("InvalidCommandException: " + e.toString());
                 } catch (Exception e) {
-                    out.println("Something unexpected occurred: " + e.getMessage());
+                    out.println("Something unexpected occurred: " + e.toString());
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error: " + e);
+            System.out.println("I/O Error: " + e.toString());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.toString());
         }
     }
 

@@ -39,12 +39,16 @@ public class Helpdesk_ticket_server {
                     thread.start();
                 }
                 catch(IOException e) {
-                    System.out.println("Error:" + e);
+                    System.out.println("I/O Error:" + e.toString());
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.toString());
                 }
             }            
         }
-        catch(Exception e) {
-            System.out.println("Error: " + e);
+        catch(IOException | IllegalArgumentException e) {
+            System.out.println("I/O Error: " + e.toString());
+        } catch(Exception e) {
+            System.out.println("Error: " + e.toString());
         }
     }
     
