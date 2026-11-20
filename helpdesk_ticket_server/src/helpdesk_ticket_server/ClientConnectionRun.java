@@ -32,23 +32,26 @@ public class ClientConnectionRun implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 ) {
+            
+            // Shows when client connects
+            System.out.println("New Client: " + socket.getRemoteSocketAddress()); 
 
             String clientMessage;
 
             // Check if clientMessage is null where the client has disconnected
             while ((clientMessage = in.readLine()) != null) {
-                // Trim clientMessage to prevent issues with commands being misinterpreted 
+                // Trim clientMessage to prevent valid commands being rejected 
                 clientMessage = clientMessage.trim();
+                
+                // Shows when a message is recived + from which client
+                System.out.println("Client: " + socket.getRemoteSocketAddress() + "; Message: " + clientMessage);
 
                 // Client sends stop command or client disconnects
-                if (clientMessage.equals("STOP")) {
+                if (clientMessage.equalsIgnoreCase("STOP")) {
                     out.println("TERMINATE");
                     break;
                 }
                 
-                // Test if clients mssage is being recived and if each link is ran on its own thread
-                // out.println(clientMessage);
-
                 
                 try {
                     // Parse clientMessage into a format that allows the system to handle the request
@@ -59,7 +62,7 @@ public class ClientConnectionRun implements Runnable {
                     
                     // Check if action provided is valid
                     if(!acceptedCommands.contains(clientCommands[0])) {
-                        throw new InvalidCommandException("Command must be: " + acceptedCommands.toString());
+                        throw new InvalidCommandException("action must be open/close/list");
                     }
                     
                     // Eeach command requires 5 fields, if only 2 fields are provided the rest of the fields must be "-;"
@@ -108,7 +111,7 @@ public class ClientConnectionRun implements Runnable {
                 } catch (InvalidCommandException e) {
                     out.println("InvalidCommandException: " + e.getMessage());
                 } catch (Exception e) {
-                    out.println("Something unexpected occured: " + e.getMessage());
+                    out.println("Something unexpected occurred: " + e.getMessage());
                 }
             }
         } catch (IOException e) {

@@ -26,7 +26,7 @@ public class TicketManagement {
         
         // Check if ticket category is correct
         if(!acceptedCategories.contains(category.toLowerCase())) {
-            throw new InvalidCommandException("category must be " + acceptedCategories.toString());
+            throw new InvalidCommandException("category must be account/network/software/other");
         }
         
         // Create and add new ticket
