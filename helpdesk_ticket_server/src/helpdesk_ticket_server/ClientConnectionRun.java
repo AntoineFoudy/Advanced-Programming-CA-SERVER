@@ -81,14 +81,28 @@ public class ClientConnectionRun implements Runnable {
                     // Check which command is being called and excecute correct method
                     if(clientCommands[0].equals(acceptedCommands.get(0))) {
                         // open command
+                        // Check that fields for open action do not contain just "-"
+                        for(int i = 1; i < clientCommands.length; i++) {
+                            if(clientCommands[i].equals("-")) {
+                                throw new InvalidCommandException("Open action requires: ticket ID, student name, category, and description");
+                            }
+                        }
                         out.println(ticketManagement.open(clientCommands[1], clientCommands[2], clientCommands[3], clientCommands[4]));
                     } 
                     else if(clientCommands[0].equals(acceptedCommands.get(1))) {
                         // close command
+                        // Check that ticket ID is provieded and not "-"
+                        if(clientCommands[1].equals("-")) {
+                            throw new InvalidCommandException("Close action requires a valid ticket id");
+                        }
                         out.println(ticketManagement.close(clientCommands[1]));
                     }
                     else if(clientCommands[0].equals(acceptedCommands.get(2))) {
                         // list command
+                        // Check that student name is provided and not "-"
+                        if(clientCommands[2].equals("-")) {
+                            throw new InvalidCommandException("List action requires a valid student name");
+                        }
                         out.println(ticketManagement.list(clientCommands[2]));
                     }                     
                 } catch (InvalidCommandException e) {
